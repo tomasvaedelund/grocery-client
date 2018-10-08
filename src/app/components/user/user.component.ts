@@ -7,13 +7,15 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
-
   displayName: string;
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService) {}
 
   ngOnInit() {
     this.displayName = this.auth.currentUserDisplayName;
   }
 
+  logout(): void {
+    this.auth.logout();
+  }
 }

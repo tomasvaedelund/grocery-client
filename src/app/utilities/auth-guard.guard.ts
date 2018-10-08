@@ -5,8 +5,9 @@ import {
   RouterStateSnapshot,
   Router
 } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, pipe } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { map, take, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -22,15 +23,14 @@ export class AuthGuardGuard implements CanActivate {
       return true;
     }
 
-    const redirectUrl = next['_routerState']['url'];
-    this.router.navigateByUrl(
-      this.router.createUrlTree(['/login'], {
-        queryParams: {
-          redirectUrl
+    return this.auth.currentUserObservable.pipe(
+      take(1),
+      map(user => !!user),
+      tap(loggedIn => {
+        if (!loggedIn) {
+          this.router.navigate(['/login']);
         }
       })
     );
-
-    return false;
   }
 }
