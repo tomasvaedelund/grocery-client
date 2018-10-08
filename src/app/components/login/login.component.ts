@@ -9,7 +9,6 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  user: any;
   email: string;
   emailSent: boolean;
 
@@ -18,8 +17,6 @@ export class LoginComponent implements OnInit {
   constructor(public auth: AuthService, private router: Router) {}
 
   ngOnInit() {
-    this.user = this.auth.currentUser;
-
     const url = this.router.url;
 
     if (url.includes('signIn')) {

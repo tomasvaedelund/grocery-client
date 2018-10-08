@@ -41,7 +41,7 @@ export class AuthService {
     if (!this.authState) {
       return 'Guest';
     } else {
-      return this.authState['displayName'] || 'User without a Name';
+      return this.authState['displayName'] || this.authState.email;
     }
   }
 
@@ -63,8 +63,9 @@ export class AuthService {
     return this.afAuth.auth.signInWithEmailLink(email, url);
   }
 
-  async logout(): Promise<void> {
-    await this.afAuth.auth.signOut();
-    this.router.navigate(['/']);
+  logout(): void {
+    this.afAuth.auth.signOut().then(() => {
+      this.router.navigate(['/']);
+    });
   }
 }
