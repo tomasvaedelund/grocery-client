@@ -11,6 +11,10 @@ export const environment = {
     projectId: 'grocery-7a2cc',
     storageBucket: 'grocery-7a2cc.appspot.com',
     messagingSenderId: '829896509671'
+  },
+  actionCodeSettings: {
+    url: 'http://localhost:4200/login',
+    handleCodeInApp: true
   }
 };
 

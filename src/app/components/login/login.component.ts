@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -27,13 +28,11 @@ export class LoginComponent implements OnInit {
   }
 
   async sendEmailLink(): Promise<void> {
-    const actionCodeSettings = {
-      url: 'http://localhost:4200/login',
-      handleCodeInApp: true
-    };
-
     try {
-      await this.auth.sendSignInLinkToEmail(this.email, actionCodeSettings);
+      await this.auth.sendSignInLinkToEmail(
+        this.email,
+        environment.actionCodeSettings
+      );
       window.localStorage.setItem('emailForSignIn', this.email);
       this.emailSent = true;
     } catch (error) {
