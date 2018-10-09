@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+
+import { MatSnackBar } from '@angular/material';
+
 import { AuthService } from '../../services/auth.service';
 import { IUser } from '../../models/IUser';
 
@@ -12,7 +15,7 @@ export class UserComponent implements OnInit {
   email: string;
   loading: boolean;
 
-  constructor(private auth: AuthService) {
+  constructor(private auth: AuthService, public snackBar: MatSnackBar) {
     this.loading = false;
   }
 
@@ -42,6 +45,9 @@ export class UserComponent implements OnInit {
     this.auth.updateUserData(user).then(() => {
       this.loading = false;
       this.displayName = this.userName;
+      this.snackBar.open('New display name saved', 'Close', {
+        duration: 1000
+      });
     });
   }
 
