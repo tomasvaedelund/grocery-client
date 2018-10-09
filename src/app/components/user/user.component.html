@@ -1,10 +1,14 @@
 <div class="container">
-  <span>Welcome, {{displayName}}</span>
+  <span>Welcome, {{userName}}</span>
 
-  <form class="example-form">
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="Display name" [value]=displayName>
+  <form (ngSubmit)="updateDisplayName()" class="form" fxLayout="row">
+    <mat-form-field fxFlex="2 2 auto">
+      <input matInput placeholder="Enter new display name or empty for email" [(ngModel)]="displayName" name="displayName">
     </mat-form-field>
+
+    <mat-icon class="btn-clear" (click)="clearDisplayName()">clear</mat-icon>
+
+    <button mat-raised-button type="submit" fxFlexOffset="10px" class="btn" color="primary">Submit</button>
   </form>
 
   <button (click)="logout()">Logout</button>

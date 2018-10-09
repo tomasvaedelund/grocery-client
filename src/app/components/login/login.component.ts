@@ -46,11 +46,8 @@ export class LoginComponent implements OnInit {
           email = window.prompt('Please provide your email for confirmation');
         }
 
-        const result = await this.auth.signInWithEmailLink(email, url);
+        await this.auth.signInWithEmailLink(email, url);
         window.localStorage.removeItem('emailForSignIn');
-
-        // When successful login, redirect to home
-        this.router.navigate(['/']);
       }
     } catch (error) {
       this.errorMessage = error.message;
