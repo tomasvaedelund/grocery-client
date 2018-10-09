@@ -34,6 +34,10 @@ export class UserComponent implements OnInit {
   }
 
   updateDisplayName(): void {
+    if (this.auth.currentUserDisplayName === this.userName) {
+      return;
+    }
+
     this.loading = true;
 
     const user: IUser = {
