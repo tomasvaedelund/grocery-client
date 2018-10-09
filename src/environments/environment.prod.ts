@@ -1,3 +1,7 @@
 export const environment = {
-  production: true
+  production: true,
+  actionCodeSettings: {
+    url: 'http://localhost:4200/login',
+    handleCodeInApp: true
+  }
 };
