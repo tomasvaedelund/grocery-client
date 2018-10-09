@@ -17,23 +17,24 @@ export class AuthService {
   }
 
   // Returns true if user is logged in
-  get isAuthenticated(): boolean {
+  get authenticated(): boolean {
     return this.authState !== null;
   }
 
   // Returns current user data
   get currentUser(): firebase.User {
-    return this.isAuthenticated ? this.authState : null;
+    return this.authenticated ? this.authState : null;
   }
 
   // Returns current user data as Observable
+  // This is called in the AuthGuard and thus makes sure that this.authState is always set
   get currentUserObservable(): Observable<firebase.User> {
     return this.afAuth.authState;
   }
 
   // Returns current user UID
   get currentUserId(): string {
-    return this.isAuthenticated ? this.authState.uid : '';
+    return this.authenticated ? this.authState.uid : '';
   }
 
   // Returns current user display name or Guest
