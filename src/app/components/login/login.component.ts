@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
         const result = await this.auth.signInWithEmailLink(email, url);
         window.localStorage.removeItem('emailForSignIn');
 
-        // When succesful login, redirect to home
+        // When successful login, redirect to home
         this.router.navigate(['/']);
       }
     } catch (error) {
