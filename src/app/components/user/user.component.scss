@@ -1,5 +1,10 @@
-form {
-  padding-top: 16px;
+.header {
+  display: block;
+  margin-bottom: 16px;
+}
+
+.form {
+  position: relative;
 }
 
 .btn {
@@ -8,7 +13,12 @@ form {
 }
 
 .btn-clear {
-  margin-left: -20px;
-  margin-top: 18px;
+  position: absolute;
+  top: 13px;
+  right: -4px;
   z-index: 10;
+}
+
+.full-width {
+  width: 100%;
 }

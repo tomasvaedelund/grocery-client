@@ -13,6 +13,7 @@ import { IUser } from '../../models/IUser';
 export class UserComponent implements OnInit {
   displayName: string;
   email: string;
+
   loading: boolean;
 
   constructor(private auth: AuthService, public snackBar: MatSnackBar) {
@@ -28,13 +29,16 @@ export class UserComponent implements OnInit {
     return this.displayName || this.email;
   }
 
+  get isDisplayNameChanged(): boolean {
+    return this.auth.currentUserDisplayName !== this.userName;
+  }
+
   clearDisplayName(): void {
-    console.log('cleared');
     this.displayName = '';
   }
 
   updateDisplayName(): void {
-    if (this.auth.currentUserDisplayName === this.userName) {
+    if (!this.isDisplayNameChanged) {
       return;
     }
 
