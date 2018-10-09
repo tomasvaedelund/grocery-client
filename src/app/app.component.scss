@@ -1,0 +1,21 @@
+.btn-footer {
+  color: #fff;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+
+  text-decoration: none;
+
+  mat-icon {
+    align-self: center;
+  }
+}
+
+.left-border {
+  border-left: 1px solid #fff;
+}
+
+.right-border {
+  border-right: 1px solid #fff;
+}
