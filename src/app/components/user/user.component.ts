@@ -39,6 +39,9 @@ export class UserComponent implements OnInit {
 
   updateDisplayName(): void {
     if (!this.isDisplayNameChanged) {
+      this.snackBar.open('Nothing to change', 'Close', {
+        duration: 1000
+      });
       return;
     }
 
@@ -47,7 +50,8 @@ export class UserComponent implements OnInit {
     const user: IUser = {
       uid: this.auth.currentUserId,
       displayName: this.displayName,
-      email: this.email
+      email: this.email,
+      photoURL: this.auth.currentUsePhotoURL
     };
 
     this.auth.updateUserData(user).then(() => {

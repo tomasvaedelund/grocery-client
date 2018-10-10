@@ -10,32 +10,22 @@ import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { IUser } from '../models/IUser';
+import { DatabaseService } from './database.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   authState: firebase.User = null;
-  user: Observable<IUser>;
 
   constructor(
     private afAuth: AngularFireAuth,
-    private afs: AngularFirestore,
-    private router: Router
+    private router: Router,
+    private db: DatabaseService
   ) {
     this.afAuth.authState.subscribe(auth => {
       this.authState = auth;
     });
-
-    this.user = this.afAuth.authState.pipe(
-      switchMap(user => {
-        if (user) {
-          return this.afs.doc<IUser>(`users/${user.uid}`).valueChanges();
-        } else {
-          return of(null);
-        }
-      })
-    );
   }
 
   // Returns true if user is logged in
@@ -64,12 +54,16 @@ export class AuthService {
     if (!this.authState) {
       return 'Guest';
     } else {
-      return this.authState['displayName'] || this.authState.email;
+      return this.authState.displayName || this.authState.email;
     }
   }
 
   get currentUserEmail(): string {
-    return this.authState['email'];
+    return this.authenticated ? this.authState.email : '';
+  }
+
+  get currentUsePhotoURL(): string {
+    return this.authenticated ? this.authState.photoURL : '';
   }
 
   async sendSignInLinkToEmail(
@@ -83,25 +77,26 @@ export class AuthService {
     return this.afAuth.auth.isSignInWithEmailLink(url);
   }
 
-  updateUserData(user: IUser): Promise<void> {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-      `users/${user.uid}`
+  updateUserData(user: IUser): Promise<void[]> {
+    const updates: Promise<void>[] = [];
+    updates.push(
+      this.authState.updateProfile({
+        displayName: user.displayName,
+        photoURL: user.photoURL
+      })
     );
 
-    const data: IUser = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName
-    };
+    updates.push(this.db.updateUser(user));
 
-    return userRef.set(data, { merge: true });
+    return Promise.all(updates);
   }
 
-  private updateUserDataFromFirebaseUser(user: firebase.User): Promise<void> {
+  private updateUserDataFromFirebaseUser(user: firebase.User): Promise<void[]> {
     const data: IUser = {
       uid: user.uid,
       email: user.email,
-      displayName: user.displayName
+      displayName: user.displayName,
+      photoURL: user.photoURL
     };
 
     return this.updateUserData(data);
