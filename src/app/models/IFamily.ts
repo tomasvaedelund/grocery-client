@@ -2,6 +2,14 @@ import { IUser } from './IUser';
 
 export interface IFamily {
   name: string;
-  createdBy: IUser;
-  createdTime: Date;
+  createdBy: string;
+  createdTime: number;
+}
+
+export interface IFamilyId extends IFamily {
+  $key: string;
+}
+
+export interface IUserFamiliesResponse {
+  families: IFamily[];
 }
