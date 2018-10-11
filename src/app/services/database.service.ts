@@ -1,24 +1,25 @@
 import { Injectable } from '@angular/core';
 import {
   AngularFirestore,
-  AngularFirestoreDocument
+  AngularFirestoreDocument,
+  AngularFirestoreCollection
 } from '@angular/fire/firestore';
-import { IFamily } from '../models/IFamily';
+import { IFamily, IFamilyId } from '../models/IFamily';
 import { IUser } from '../models/IUser';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DatabaseService {
-  constructor(private afs: AngularFirestore) {}
+  constructor(private auth: AuthService, private afs: AngularFirestore) {}
 
-  updateUser(user: IUser): Promise<void> {
-    return this.afs
-      .doc<IUser>(`users/${user.uid}`)
-      .update(user)
-      .then()
-      .catch(error => {
-        this.afs.doc<IUser>(`users/${user.uid}`).set(user);
-      });
+  getUserFamilies(user: IUser): AngularFirestoreCollection<IFamily> {
+    return this.afs.collection<IFamily>(`users/${user.uid}/families`);
+  }
+
+  addFamily(family: IFamily): Promise<firebase.firestore.DocumentReference> {
+    const familiesRef = this.afs.collection<IFamily>(`families`);
+    return familiesRef.add(family);
   }
 }

@@ -4,12 +4,35 @@
 
   <mat-accordion>
     <mat-expansion-panel>
-
       <mat-expansion-panel-header>
         <mat-panel-title>Edit display name</mat-panel-title>
       </mat-expansion-panel-header>
 
       <form (ngSubmit)="updateDisplayName()" class="form">
+        <mat-form-field class="fill-width">
+          <input matInput placeholder="New display name" [(ngModel)]="displayName" id="displayName" name="displayName">
+        </mat-form-field>
+        <mat-icon class="btn-clear" (click)="clearDisplayName()">clear</mat-icon>
+        <button mat-raised-button type="submit" class="btn" color="primary" [disabled]="loading">Change</button>
+      </form>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Edit families</mat-panel-title>
+        <mat-panel-description>{{families?.length}}</mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-form-field class="fill-width">
+        <input matInput placeholder="Family name" [(ngModel)]="familyName" id="familyName" name="familyName">
+      </mat-form-field>
+      <button mat-raised-button type="submit" class="btn" color="primary" [disabled]="loading" (click)="addFamily()">Add</button>
+
+      <ul>
+        <li *ngFor="let family of families">{{family.name}}</li>
+      </ul>
+
+      <!-- <form (ngSubmit)="updateDisplayName()" class="form">
         <mat-form-field class="full-width">
           <input matInput placeholder="New display name" [(ngModel)]="displayName" id="displayName" name="displayName">
         </mat-form-field>
@@ -17,7 +40,7 @@
         <mat-icon class="btn-clear" (click)="clearDisplayName()">clear</mat-icon>
 
         <button mat-raised-button type="submit" class="btn" color="primary" [disabled]="loading">Submit</button>
-      </form>
+      </form> -->
 
     </mat-expansion-panel>
 

@@ -10,15 +10,16 @@
 .btn {
   height: 36px;
   margin-top: 10px;
+  margin-left: 10px;
 }
 
 .btn-clear {
   position: absolute;
-  top: 13px;
-  right: -4px;
+  top: 15px;
+  right: 96px;
   z-index: 10;
 }
 
-.full-width {
-  width: 100%;
+.fill-width {
+  width: calc(100% - 98px);
 }

@@ -10,7 +10,6 @@ import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { IUser } from '../models/IUser';
-import { DatabaseService } from './database.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +19,8 @@ export class AuthService {
 
   constructor(
     private afAuth: AngularFireAuth,
-    private router: Router,
-    private db: DatabaseService
+    private afs: AngularFirestore,
+    private router: Router
   ) {
     this.afAuth.authState.subscribe(auth => {
       this.authState = auth;
@@ -77,6 +76,16 @@ export class AuthService {
     return this.afAuth.auth.isSignInWithEmailLink(url);
   }
 
+  private updateUser(user: IUser): Promise<void> {
+    return this.afs
+      .doc<IUser>(`users/${user.uid}`)
+      .update(user)
+      .then()
+      .catch(error => {
+        this.afs.doc<IUser>(`users/${user.uid}`).set(user);
+      });
+  }
+
   updateUserData(user: IUser): Promise<void[]> {
     const updates: Promise<void>[] = [];
     updates.push(
@@ -86,7 +95,7 @@ export class AuthService {
       })
     );
 
-    updates.push(this.db.updateUser(user));
+    updates.push(this.updateUser(user));
 
     return Promise.all(updates);
   }

@@ -1,9 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-
 import { MatSnackBar } from '@angular/material';
 
+import { Observable } from 'rxjs';
+
 import { AuthService } from '../../services/auth.service';
+import { DatabaseService } from 'src/app/services/database.service';
+import { HttpService } from 'src/app/services/http.service';
+
 import { IUser } from '../../models/IUser';
+import {
+  IFamily,
+  IFamilyId,
+  IUserFamiliesResponse
+} from 'src/app/models/IFamily';
+import { AngularFirestoreCollection } from '@angular/fire/firestore';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user',
@@ -16,13 +27,61 @@ export class UserComponent implements OnInit {
 
   loading: boolean;
 
-  constructor(private auth: AuthService, public snackBar: MatSnackBar) {
+  families: IFamily[];
+
+  familyName: string;
+
+  constructor(
+    private auth: AuthService,
+    public snackBar: MatSnackBar,
+    private db: DatabaseService,
+    private http: HttpService
+  ) {
     this.loading = false;
   }
 
   ngOnInit() {
     this.displayName = this.auth.currentUserDisplayName;
     this.email = this.auth.currentUserEmail;
+
+    // When server is done changing current users families then update the list;
+    this.db
+      .getUserFamilies(this.auth.currentUser)
+      .snapshotChanges()
+      .subscribe(() => {
+        this.http.getUserFamilies(this.auth.currentUserId).subscribe(data => {
+          this.families = data.families;
+        });
+      });
+  }
+
+  addFamily(): void {
+    if (
+      this.families.some(
+        e => e.name.toLowerCase() === this.familyName.toLowerCase()
+      )
+    ) {
+      this.snackBar.open('No family added, already exists', 'Close', {
+        duration: 1000
+      });
+      return;
+    }
+
+    this.loading = true;
+
+    const family: IFamily = {
+      name: this.familyName,
+      createdBy: this.auth.currentUserId,
+      createdTime: Date.now()
+    };
+
+    this.db.addFamily(family).then(() => {
+      this.loading = false;
+
+      this.snackBar.open('Family added', 'Close', {
+        duration: 1000
+      });
+    });
   }
 
   get userName(): string {
@@ -55,8 +114,8 @@ export class UserComponent implements OnInit {
     };
 
     this.auth.updateUserData(user).then(() => {
-      this.loading = false;
       this.displayName = this.userName;
+      this.loading = false;
       this.snackBar.open('New display name saved', 'Close', {
         duration: 1000
       });
