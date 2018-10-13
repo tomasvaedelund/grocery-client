@@ -20,9 +20,9 @@ export class UserComponent implements OnInit {
 
   loading: boolean;
 
-  families: IGroup[];
+  groups: IGroup[];
 
-  familyName: string;
+  groupName: string;
 
   constructor(
     private auth: AuthService,
@@ -37,24 +37,24 @@ export class UserComponent implements OnInit {
     this.displayName = this.auth.currentUserDisplayName;
     this.email = this.auth.currentUserEmail;
 
-    // When server is done changing current users families then update the list;
+    // When server is done changing current users groups then update the list
     this.db
       .getUserMemberships(this.auth.currentUser)
       .snapshotChanges()
       .subscribe(() => {
-        this.http.getUserFamilies(this.auth.currentUserId).subscribe(data => {
-          this.families = (data as IUserGroupsResponse).groups;
+        this.http.getUserGroups(this.auth.currentUserId).subscribe(data => {
+          this.groups = (data as IUserGroupsResponse).groups;
         });
       });
   }
 
-  addFamily(): void {
+  addGroup(): void {
     if (
-      this.families.some(
-        e => e.name.toLowerCase() === this.familyName.toLowerCase()
+      this.groups.some(
+        e => e.name.toLowerCase() === this.groupName.toLowerCase()
       )
     ) {
-      this.snackBar.open('No family added, already exists', 'Close', {
+      this.snackBar.open('No group added, already exists', 'Close', {
         duration: 1000
       });
       return;
@@ -62,16 +62,16 @@ export class UserComponent implements OnInit {
 
     this.loading = true;
 
-    const family: IGroup = {
-      name: this.familyName,
+    const group: IGroup = {
+      name: this.groupName,
       createdBy: this.auth.currentUserId,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     };
 
-    this.db.createGroup(family).then(() => {
+    this.db.createGroup(group).then(() => {
       this.loading = false;
 
-      this.snackBar.open('Family added', 'Close', {
+      this.snackBar.open('Group added', 'Close', {
         duration: 1000
       });
     });

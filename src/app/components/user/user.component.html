@@ -19,17 +19,17 @@
 
     <mat-expansion-panel>
       <mat-expansion-panel-header>
-        <mat-panel-title>Edit families</mat-panel-title>
-        <mat-panel-description>{{families?.length}}</mat-panel-description>
+        <mat-panel-title>Edit groups</mat-panel-title>
+        <mat-panel-description>{{groups?.length}}</mat-panel-description>
       </mat-expansion-panel-header>
 
       <mat-form-field class="fill-width">
-        <input matInput placeholder="Family name" [(ngModel)]="familyName" id="familyName" name="familyName">
+        <input matInput placeholder="Group name" [(ngModel)]="groupName" id="groupName" name="groupName">
       </mat-form-field>
-      <button mat-raised-button type="submit" class="btn" color="primary" [disabled]="loading" (click)="addFamily()">Add</button>
+      <button mat-raised-button type="submit" class="btn" color="primary" [disabled]="loading" (click)="addGroup()">Add</button>
 
       <ul>
-        <li *ngFor="let family of families">{{family.name}}</li>
+        <li *ngFor="let group of groups">{{group.name}}</li>
       </ul>
 
       <!-- <form (ngSubmit)="updateDisplayName()" class="form">

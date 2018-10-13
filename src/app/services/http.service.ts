@@ -10,7 +10,7 @@ export class HttpService {
 
   constructor(private http: HttpClient) {}
 
-  getUserFamilies(userId: string) {
+  getUserGroups(userId: string) {
     return this.http.get<IUserGroupsResponse>(
       `${this.API_URL}/getUserGroups/${userId}/`
     );
