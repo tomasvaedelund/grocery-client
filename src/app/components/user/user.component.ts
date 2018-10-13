@@ -1,20 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 
-import { Observable } from 'rxjs';
+import * as firebase from 'firebase/app';
 
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { DatabaseService } from 'src/app/services/database.service';
 import { HttpService } from 'src/app/services/http.service';
 
-import { IUser } from '../../models/IUser';
-import {
-  IFamily,
-  IFamilyId,
-  IUserFamiliesResponse
-} from 'src/app/models/IFamily';
-import { AngularFirestoreCollection } from '@angular/fire/firestore';
-import { map } from 'rxjs/operators';
+import { IUser, IUserGroupsResponse, IGroup } from 'src/app/models';
 
 @Component({
   selector: 'app-user',
@@ -27,7 +20,7 @@ export class UserComponent implements OnInit {
 
   loading: boolean;
 
-  families: IFamily[];
+  families: IGroup[];
 
   familyName: string;
 
@@ -46,11 +39,11 @@ export class UserComponent implements OnInit {
 
     // When server is done changing current users families then update the list;
     this.db
-      .getUserFamilies(this.auth.currentUser)
+      .getUserMemberships(this.auth.currentUser)
       .snapshotChanges()
       .subscribe(() => {
         this.http.getUserFamilies(this.auth.currentUserId).subscribe(data => {
-          this.families = data.families;
+          this.families = (data as IUserGroupsResponse).groups;
         });
       });
   }
@@ -69,13 +62,13 @@ export class UserComponent implements OnInit {
 
     this.loading = true;
 
-    const family: IFamily = {
+    const family: IGroup = {
       name: this.familyName,
       createdBy: this.auth.currentUserId,
-      createdTime: Date.now()
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
     };
 
-    this.db.addFamily(family).then(() => {
+    this.db.createGroup(family).then(() => {
       this.loading = false;
 
       this.snackBar.open('Family added', 'Close', {

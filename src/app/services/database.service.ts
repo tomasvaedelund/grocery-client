@@ -4,9 +4,10 @@ import {
   AngularFirestoreDocument,
   AngularFirestoreCollection
 } from '@angular/fire/firestore';
-import { IFamily, IFamilyId } from '../models/IFamily';
-import { IUser } from '../models/IUser';
+
 import { AuthService } from './auth.service';
+
+import { IGroup, IUser, IMembership } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +15,14 @@ import { AuthService } from './auth.service';
 export class DatabaseService {
   constructor(private auth: AuthService, private afs: AngularFirestore) {}
 
-  getUserFamilies(user: IUser): AngularFirestoreCollection<IFamily> {
-    return this.afs.collection<IFamily>(`users/${user.uid}/families`);
+  getUserMemberships(user: IUser): AngularFirestoreCollection<IMembership> {
+    return this.afs.collection<IMembership>(`memberships`, ref =>
+      ref.where('userId', '==', user.uid)
+    );
   }
 
-  addFamily(family: IFamily): Promise<firebase.firestore.DocumentReference> {
-    const familiesRef = this.afs.collection<IFamily>(`families`);
-    return familiesRef.add(family);
+  createGroup(group: IGroup): Promise<firebase.firestore.DocumentReference> {
+    const groupsRef = this.afs.collection<IGroup>(`groups`);
+    return groupsRef.add(group);
   }
 }

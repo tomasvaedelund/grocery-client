@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IUserFamiliesResponse } from '../models/IFamily';
+import { IUserGroupsResponse } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +11,8 @@ export class HttpService {
   constructor(private http: HttpClient) {}
 
   getUserFamilies(userId: string) {
-    return this.http.get<IUserFamiliesResponse>(
-      `${this.API_URL}/getUserFamilies/${userId}/`
+    return this.http.get<IUserGroupsResponse>(
+      `${this.API_URL}/getUserGroups/${userId}/`
     );
   }
 }

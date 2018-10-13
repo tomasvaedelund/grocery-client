@@ -1,9 +1,12 @@
-import { IFamily } from './IFamily';
+import { IGroup } from './IGroup';
 
 export interface IUser {
   uid: string;
   email: string;
   displayName: string;
   photoURL: string;
-  families?: IFamily[];
+}
+
+export interface IUserGroupsResponse {
+  groups: IGroup[];
 }
