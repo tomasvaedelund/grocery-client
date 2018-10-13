@@ -29,7 +29,7 @@
       <button mat-raised-button type="submit" class="btn" color="primary" [disabled]="loading" (click)="addGroup()">Add</button>
 
       <ul>
-        <li *ngFor="let group of groups">{{group.name}}</li>
+        <li *ngFor="let group of groups">{{group.name}} | {{group.id}}</li>
       </ul>
 
       <!-- <form (ngSubmit)="updateDisplayName()" class="form">

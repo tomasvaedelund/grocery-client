@@ -1,3 +1,3 @@
-export { IGroup } from './IGroup';
-export { IUser, IUserGroupsResponse } from './IUser';
+export { IGroup, IGroupId } from './IGroup';
+export { IUser } from './IUser';
 export { IMembership } from './IMembership';

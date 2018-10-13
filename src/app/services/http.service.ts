@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { IUserGroupsResponse } from '../models';
+// import { IUserGroupsResponse } from '../models';
 
 import { environment } from '../../environments/environment';
 
@@ -13,9 +13,9 @@ export class HttpService {
 
   constructor(private http: HttpClient) {}
 
-  getUserGroups(userId: string) {
-    return this.http.get<IUserGroupsResponse>(
-      `${this.API_URL}/getUserGroups/${userId}/`
-    );
-  }
+  // getUserGroups(userId: string) {
+  //   return this.http.get<IUserGroupsResponse>(
+  //     `${this.API_URL}/getUserGroups/${userId}/`
+  //   );
+  // }
 }

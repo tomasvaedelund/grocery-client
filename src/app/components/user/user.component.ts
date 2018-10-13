@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 
 import * as firebase from 'firebase/app';
@@ -7,20 +7,22 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DatabaseService } from 'src/app/services/database.service';
 import { HttpService } from 'src/app/services/http.service';
 
-import { IUser, IUserGroupsResponse, IGroup } from 'src/app/models';
+import { IUser, IGroup, IGroupId } from 'src/app/models';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, OnDestroy {
   displayName: string;
   email: string;
 
   loading: boolean;
 
-  groups: IGroup[];
+  groupsSubscription: Subscription;
+  groups: IGroupId[];
 
   groupName: string;
 
@@ -37,14 +39,10 @@ export class UserComponent implements OnInit {
     this.displayName = this.auth.currentUserDisplayName;
     this.email = this.auth.currentUserEmail;
 
-    // When server is done changing current users groups then update the list
-    this.db
-      .getUserMemberships(this.auth.currentUser)
-      .snapshotChanges()
-      .subscribe(() => {
-        this.http.getUserGroups(this.auth.currentUserId).subscribe(data => {
-          this.groups = (data as IUserGroupsResponse).groups;
-        });
+    this.groupsSubscription = this.db
+      .getUserGroups(this.auth.currentUserId)
+      .subscribe(snap => {
+        this.groups = snap;
       });
   }
 
@@ -117,5 +115,9 @@ export class UserComponent implements OnInit {
 
   logout(): void {
     this.auth.logout();
+  }
+
+  ngOnDestroy(): void {
+    this.groupsSubscription.unsubscribe();
   }
 }
