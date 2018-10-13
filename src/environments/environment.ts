@@ -15,6 +15,9 @@ export const environment = {
   actionCodeSettings: {
     url: 'http://localhost:4200/login',
     handleCodeInApp: true
+  },
+  apiSettings: {
+    apiUrl: 'https://us-central1-grocery-7a2cc.cloudfunctions.net'
   }
 };
 

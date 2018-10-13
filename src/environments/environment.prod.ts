@@ -11,5 +11,8 @@ export const environment = {
   actionCodeSettings: {
     url: 'https://grocery-7a2cc.firebaseapp.com/login',
     handleCodeInApp: true
+  },
+  apiSettings: {
+    apiUrl: 'https://us-central1-grocery-7a2cc.cloudfunctions.net'
   }
 };

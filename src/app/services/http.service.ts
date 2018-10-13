@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+
 import { IUserGroupsResponse } from '../models';
+
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpService {
-  private API_URL = 'https://us-central1-grocery-7a2cc.cloudfunctions.net';
+  private API_URL = environment.apiSettings.apiUrl;
 
   constructor(private http: HttpClient) {}
 
