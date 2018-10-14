@@ -24,23 +24,18 @@
       </mat-expansion-panel-header>
 
       <mat-form-field class="fill-width">
-        <input matInput placeholder="Group name" [(ngModel)]="groupName" id="groupName" name="groupName">
+        <input matInput placeholder="New group name" [(ngModel)]="groupName" id="groupName" name="groupName">
       </mat-form-field>
-      <button mat-raised-button type="submit" class="btn" color="primary" [disabled]="loading" (click)="addGroup()">Add</button>
+      <button mat-raised-button type="submit" class="btn" color="primary" [disabled]="loading" (click)="createGroup()">Add</button>
 
-      <ul>
-        <li *ngFor="let group of groups">{{group.name}} | {{group.id}}</li>
-      </ul>
-
-      <!-- <form (ngSubmit)="updateDisplayName()" class="form">
-        <mat-form-field class="full-width">
-          <input matInput placeholder="New display name" [(ngModel)]="displayName" id="displayName" name="displayName">
-        </mat-form-field>
-
-        <mat-icon class="btn-clear" (click)="clearDisplayName()">clear</mat-icon>
-
-        <button mat-raised-button type="submit" class="btn" color="primary" [disabled]="loading">Submit</button>
-      </form> -->
+      <mat-list>
+        <mat-list-item *ngFor="let group of groups">
+          <p matLine>{{group.name}}</p>
+          <button mat-icon-button (click)="deleteGroup(group.id)">
+            <mat-icon color="warn">delete</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
 
     </mat-expansion-panel>
 

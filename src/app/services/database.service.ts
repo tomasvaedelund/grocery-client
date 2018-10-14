@@ -8,7 +8,7 @@ import {
 import { Observable, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { IGroup, IMembership, IGroupId } from '../models';
+import { IGroup, IMembership } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -17,15 +17,17 @@ export class DatabaseService {
   constructor(private afs: AngularFirestore) {}
 
   getUserMemberships(userId: string): AngularFirestoreCollection<IMembership> {
-    return this.afs.collection<IMembership>(`/memberships`, ref =>
+    const membershipCollection = this.afs.collection<IMembership>(`/memberships`, ref =>
       ref.where('userId', '==', userId)
     );
+
+    return membershipCollection;
   }
 
-  getUserGroups(userId: string): Observable<IGroupId[]> {
-    const membershipsRef = this.getUserMemberships(userId);
+  getUserGroups(userId: string): Observable<IGroup[]> {
+    const membershipCollection = this.getUserMemberships(userId);
 
-    const result = membershipsRef.valueChanges().pipe(
+    const result$ = membershipCollection.valueChanges().pipe(
       switchMap(memberships => {
         if (memberships.length > 0) {
           const groups$ = memberships.map(membership => {
@@ -36,27 +38,32 @@ export class DatabaseService {
                 map(groupSnap => {
                   const data = groupSnap.payload.data();
                   const id = groupSnap.payload.id;
-                  return <IGroupId>{ id, ...data };
+                  return <IGroup>{ id, ...data };
                 })
               );
           });
           return combineLatest(groups$);
         } else {
-          return new Observable<IGroupId[]>();
+          return new Observable<IGroup[]>();
         }
       })
     );
 
-    return result;
+    return result$;
   }
 
-  getGroup(groupId: string): AngularFirestoreDocument<IGroup> {
-    const group = this.afs.doc<IGroup>(`/groups/${groupId}`);
-    return group;
+  getGroupDetails(groupId: string): AngularFirestoreDocument<IGroup> {
+    const groupDocument = this.afs.doc<IGroup>(`/groups/${groupId}`);
+    return groupDocument;
   }
 
   createGroup(group: IGroup): Promise<firebase.firestore.DocumentReference> {
-    const groupsRef = this.afs.collection<IGroup>(`groups`);
-    return groupsRef.add(group);
+    const groupsCollection = this.afs.collection<IGroup>(`groups`);
+    return groupsCollection.add(group);
+  }
+
+  deleteGroup(groupId: string): Promise<void> {
+    const groupDocument = this.afs.doc<IGroup>(`/groups/${groupId}`);
+    return groupDocument.delete();
   }
 }

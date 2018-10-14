@@ -23,3 +23,13 @@
 .fill-width {
   width: calc(100% - 98px);
 }
+
+.mat-list {
+  .mat-list-item {
+    height: 30px;
+
+    .mat-list-item-content {
+      padding: 0;
+    }
+  }
+}

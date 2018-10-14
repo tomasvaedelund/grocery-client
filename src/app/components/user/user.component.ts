@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DatabaseService } from 'src/app/services/database.service';
 import { HttpService } from 'src/app/services/http.service';
 
-import { IUser, IGroup, IGroupId } from 'src/app/models';
+import { IUser, IGroup } from 'src/app/models';
 import { Observable, Subscription } from 'rxjs';
 
 @Component({
@@ -22,7 +22,7 @@ export class UserComponent implements OnInit, OnDestroy {
   loading: boolean;
 
   groupsSubscription: Subscription;
-  groups: IGroupId[];
+  groups: IGroup[];
 
   groupName: string;
 
@@ -39,18 +39,24 @@ export class UserComponent implements OnInit, OnDestroy {
     this.displayName = this.auth.currentUserDisplayName;
     this.email = this.auth.currentUserEmail;
 
-    this.groupsSubscription = this.db
-      .getUserGroups(this.auth.currentUserId)
-      .subscribe(snap => {
-        this.groups = snap;
-      });
+    this.groupsSubscription = this.db.getUserGroups(this.auth.currentUserId).subscribe(snap => {
+      this.groups = snap;
+    });
   }
 
-  addGroup(): void {
+  get userName(): string {
+    return this.displayName || this.email;
+  }
+
+  get isDisplayNameChanged(): boolean {
+    return this.auth.currentUserDisplayName !== this.userName;
+  }
+
+  createGroup(): void {
     if (
-      this.groups.some(
-        e => e.name.toLowerCase() === this.groupName.toLowerCase()
-      )
+      this.groups &&
+      this.groups.length > 0 &&
+      this.groups.some(e => e.name.toLowerCase() === this.groupName.toLowerCase())
     ) {
       this.snackBar.open('No group added, already exists', 'Close', {
         duration: 1000
@@ -75,12 +81,8 @@ export class UserComponent implements OnInit, OnDestroy {
     });
   }
 
-  get userName(): string {
-    return this.displayName || this.email;
-  }
-
-  get isDisplayNameChanged(): boolean {
-    return this.auth.currentUserDisplayName !== this.userName;
+  deleteGroup(groupId: string): void {
+    this.db.deleteGroup(groupId);
   }
 
   clearDisplayName(): void {
