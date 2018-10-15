@@ -1,31 +1,41 @@
-<header>
-  <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="center center">
-    <span>Grocery</span>
-  </mat-toolbar>
-</header>
+<mat-sidenav-container>
 
-<main>
-  <router-outlet></router-outlet>
-</main>
+  <mat-sidenav #sidenav mode="over">
+    Side nav content
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <header>
+      <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="center center">
+        <span>Grocery</span>
+      </mat-toolbar>
+    </header>
+
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
 
 <footer>
   <mat-toolbar color="primary">
     <mat-toolbar-row fxLayout="row" fxLayoutAlign="center center">
 
-      <a routerLink="/" class="btn-footer left-border">
+      <a routerLink="/" class="btn-footer left-border" (click)="close()">
         <mat-icon>add_shopping_cart</mat-icon>
       </a>
 
-      <a routerLink="/shopping-list" class="btn-footer left-border">
+      <a routerLink="/shopping-list" class="btn-footer left-border" (click)="close()">
         <mat-icon>shopping_cart</mat-icon>
       </a>
 
-      <a routerLink="/history" class="btn-footer left-border">
+      <a routerLink="/history" class="btn-footer left-border" (click)="close()">
         <mat-icon>hourglass_empty</mat-icon>
       </a>
 
-      <a routerLink="/user" class="btn-footer left-border right-border">
-        <mat-icon>person</mat-icon>
+      <a class="btn-footer left-border right-border" (click)=toggle()>
+        <mat-icon>{{menuIcon}}</mat-icon>
       </a>
     </mat-toolbar-row>
   </mat-toolbar>

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,21 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'grocery-material';
+  @ViewChild('sidenav')
+  sidenav: MatSidenav;
+
+  opened = false;
+  menuIcon = 'menu';
+
+  toggle(): void {
+    this.opened = !this.opened;
+    this.menuIcon = this.opened ? 'close' : 'menu';
+    this.sidenav.toggle();
+  }
+
+  close(): void {
+    this.opened = false;
+    this.menuIcon = 'menu';
+    this.sidenav.close();
+  }
 }
