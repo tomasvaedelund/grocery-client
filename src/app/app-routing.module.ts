@@ -9,6 +9,7 @@ import { ShoppingListComponent } from './components/shopping-list/shopping-list.
 import { LoginComponent } from './components/login/login.component';
 import { HistoryComponent } from './components/history/history.component';
 import { HomeComponent } from './components/home/home.component';
+import { MembershipComponent } from './components/membership/membership.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,11 @@ const routes: Routes = [
   {
     path: 'user',
     component: UserComponent,
+    canActivate: [AuthGuardGuard]
+  },
+  {
+    path: 'membership',
+    component: MembershipComponent,
     canActivate: [AuthGuardGuard]
   },
   {

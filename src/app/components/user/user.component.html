@@ -16,29 +16,6 @@
         <button mat-raised-button type="submit" class="btn" color="primary" [disabled]="loading">Change</button>
       </form>
     </mat-expansion-panel>
-
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>Edit groups</mat-panel-title>
-        <mat-panel-description>{{groups?.length}}</mat-panel-description>
-      </mat-expansion-panel-header>
-
-      <mat-form-field class="fill-width">
-        <input matInput placeholder="New group name" [(ngModel)]="groupName" id="groupName" name="groupName">
-      </mat-form-field>
-      <button mat-raised-button type="submit" class="btn" color="primary" [disabled]="loading" (click)="createGroup()">Add</button>
-
-      <mat-list>
-        <mat-list-item *ngFor="let group of groups">
-          <p matLine>{{group.name}}</p>
-          <button mat-icon-button (click)="deleteMembership(group.membershipId)">
-            <mat-icon color="warn">delete</mat-icon>
-          </button>
-        </mat-list-item>
-      </mat-list>
-
-    </mat-expansion-panel>
-
   </mat-accordion>
 
   <button mat-raised-button color="accent" (click)="logout()">Logout</button>

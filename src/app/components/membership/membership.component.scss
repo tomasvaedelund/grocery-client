@@ -1,0 +1,35 @@
+h3,
+h4 {
+  margin: 6px auto;
+}
+
+.form {
+  position: relative;
+}
+
+.btn {
+  height: 36px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.btn-clear {
+  position: absolute;
+  top: 15px;
+  right: 96px;
+  z-index: 10;
+}
+
+.fill-width {
+  width: calc(100% - 98px);
+}
+
+.mat-list {
+  .mat-list-item {
+    height: 30px;
+
+    .mat-list-item-content {
+      padding: 0;
+    }
+  }
+}
