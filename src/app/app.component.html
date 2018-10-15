@@ -1,7 +1,35 @@
 <mat-sidenav-container>
 
   <mat-sidenav #sidenav mode="over">
-    Side nav content
+    <header>
+      <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="center center">
+        <span>Grocery</span>
+      </mat-toolbar>
+    </header>
+
+    <mat-nav-list>
+      <mat-list-item>
+        <mat-icon matListIcon>person</mat-icon>
+        <a routerLink="/user" (click)="close()">
+          User
+        </a>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <mat-icon matListIcon>group</mat-icon>
+        <a routerLink="/membership" (click)="close()">
+          Memberships
+        </a>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <mat-icon matListIcon>group_add</mat-icon>
+        <a routerLink="/invitation" (click)="close()">
+          Invitations
+        </a>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content>
