@@ -29,8 +29,7 @@ export class UserComponent implements OnInit, OnDestroy {
   constructor(
     private auth: AuthService,
     public snackBar: MatSnackBar,
-    private db: DatabaseService,
-    private http: HttpService
+    private db: DatabaseService
   ) {
     this.loading = false;
   }
