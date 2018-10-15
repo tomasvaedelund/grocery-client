@@ -31,7 +31,7 @@
       <mat-list>
         <mat-list-item *ngFor="let group of groups">
           <p matLine>{{group.name}}</p>
-          <button mat-icon-button (click)="deleteGroup(group.id)">
+          <button mat-icon-button (click)="deleteMembership(group.membershipId)">
             <mat-icon color="warn">delete</mat-icon>
           </button>
         </mat-list-item>

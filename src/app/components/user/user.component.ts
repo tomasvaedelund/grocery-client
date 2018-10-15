@@ -85,6 +85,10 @@ export class UserComponent implements OnInit, OnDestroy {
     this.db.deleteGroup(groupId);
   }
 
+  deleteMembership(membershipId: string): void {
+    this.db.deleteMembership(membershipId);
+  }
+
   clearDisplayName(): void {
     this.displayName = '';
   }

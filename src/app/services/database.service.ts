@@ -24,24 +24,32 @@ export class DatabaseService {
     return membershipCollection;
   }
 
+  deleteMembership(membershipId: string): Promise<void> {
+    const membershipDocument = this.afs.doc<IMembership>(`/memberships/${membershipId}`);
+    return membershipDocument.delete();
+  }
+
   getUserGroups(userId: string): Observable<IGroup[]> {
     const membershipCollection = this.getUserMemberships(userId);
 
-    const result$ = membershipCollection.valueChanges().pipe(
-      switchMap(memberships => {
-        if (memberships.length > 0) {
-          const groups$ = memberships.map(membership => {
+    const result$ = membershipCollection.snapshotChanges().pipe(
+      switchMap(actions => {
+        if (actions.length > 0) {
+          const groups$ = actions.map(action => {
+            const groupId = action.payload.doc.data().groupId;
             return this.afs
-              .doc<IGroup>(`/groups/${membership.groupId}`)
+              .doc<IGroup>(`/groups/${groupId}`)
               .snapshotChanges()
               .pipe(
                 map(groupSnap => {
                   const data = groupSnap.payload.data();
                   const id = groupSnap.payload.id;
-                  return <IGroup>{ id, ...data };
+                  const membershipId = action.payload.doc.id;
+                  return <IGroup>{ id, membershipId, ...data };
                 })
               );
           });
+
           return combineLatest(groups$);
         } else {
           return new Observable<IGroup[]>();
@@ -52,7 +60,7 @@ export class DatabaseService {
     return result$;
   }
 
-  getGroupDetails(groupId: string): AngularFirestoreDocument<IGroup> {
+  getGroup(groupId: string): AngularFirestoreDocument<IGroup> {
     const groupDocument = this.afs.doc<IGroup>(`/groups/${groupId}`);
     return groupDocument;
   }

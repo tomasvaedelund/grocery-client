@@ -3,4 +3,5 @@ export interface IGroup {
   createdBy: string;
   createdAt: firebase.firestore.FieldValue;
   id?: string;
+  membershipId?: string;
 }
