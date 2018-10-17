@@ -16,9 +16,15 @@
   <mat-list>
     <mat-list-item *ngFor="let group of groups">
       <p matLine>{{group.name}}</p>
+
+      <a mat-icon-button [routerLink]="['/memberships', group.membershipId, 'invite']">
+        <mat-icon color="primary">person_add</mat-icon>
+      </a>
+
       <button mat-icon-button (click)="deleteMembership(group.membershipId)" [disabled]="loading">
         <mat-icon color="warn">delete</mat-icon>
       </button>
+
     </mat-list-item>
   </mat-list>
 </div>

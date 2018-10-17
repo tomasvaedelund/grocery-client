@@ -10,6 +10,7 @@ import { LoginComponent } from './components/login/login.component';
 import { HistoryComponent } from './components/history/history.component';
 import { HomeComponent } from './components/home/home.component';
 import { MembershipComponent } from './components/membership/membership.component';
+import { MembershipInviteComponent } from './components/membership/invite/invite.component';
 
 const routes: Routes = [
   {
@@ -22,8 +23,13 @@ const routes: Routes = [
     canActivate: [AuthGuardGuard]
   },
   {
-    path: 'membership',
+    path: 'memberships',
     component: MembershipComponent,
+    canActivate: [AuthGuardGuard]
+  },
+  {
+    path: 'memberships/:id/invite',
+    component: MembershipInviteComponent,
     canActivate: [AuthGuardGuard]
   },
   {
