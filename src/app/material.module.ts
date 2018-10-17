@@ -8,6 +8,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatProgressSpinnerModule, MatSpinner } from '@angular/material/progress-spinner';
+
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
   imports: [
@@ -18,7 +21,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MatSnackBarModule,
     MatExpansionModule,
     MatListModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatProgressSpinnerModule,
+    OverlayModule
   ],
   exports: [
     MatToolbarModule,
@@ -28,7 +33,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MatSnackBarModule,
     MatExpansionModule,
     MatListModule,
-    MatSidenavModule
-  ]
+    MatSidenavModule,
+    MatProgressSpinnerModule,
+    OverlayModule
+  ],
+  entryComponents: [MatSpinner]
 })
 export class MaterialModule {}

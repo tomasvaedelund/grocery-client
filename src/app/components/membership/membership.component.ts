@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { DatabaseService } from 'src/app/services/database.service';
+import { UiService } from 'src/app/services/ui.service';
 
 import { IGroup } from 'src/app/models';
 
@@ -25,7 +26,8 @@ export class MembershipComponent implements OnInit, OnDestroy {
   constructor(
     private auth: AuthService,
     public snackBar: MatSnackBar,
-    private db: DatabaseService
+    private db: DatabaseService,
+    private ui: UiService
   ) {
     this.loading = false;
   }
@@ -33,7 +35,13 @@ export class MembershipComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.groupsSubscription = this.db.getUserGroups(this.auth.currentUserId).subscribe(snap => {
       this.groups = snap;
+      if (this.ui.isSpinning) {
+        this.snackBar.open('Membership changes done', 'Close', {
+          duration: 1000
+        });
+      }
       this.loading = false;
+      this.ui.stopSpinner();
     });
   }
 
@@ -43,13 +51,14 @@ export class MembershipComponent implements OnInit, OnDestroy {
       this.groups.length > 0 &&
       this.groups.some(e => e.name.toLowerCase() === this.groupName.toLowerCase())
     ) {
-      this.snackBar.open('No group added, already exists', 'Close', {
+      this.snackBar.open('No membership added, already exists', 'Close', {
         duration: 1000
       });
       return;
     }
 
     this.loading = true;
+    this.ui.showSpinner();
 
     const group: IGroup = {
       name: this.groupName,
@@ -57,16 +66,13 @@ export class MembershipComponent implements OnInit, OnDestroy {
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     };
 
-    this.db.createGroup(group).then(() => {
-      this.loading = false;
-
-      this.snackBar.open('Group added', 'Close', {
-        duration: 1000
-      });
-    });
+    this.db.createGroup(group);
   }
 
   deleteMembership(membershipId: string): void {
+    this.loading = true;
+    this.ui.showSpinner();
+
     this.db.deleteMembership(membershipId);
   }
 
