@@ -8,23 +8,23 @@
     </header>
 
     <mat-nav-list>
-      <mat-list-item>
+      <mat-list-item (click)="close()">
         <mat-icon matListIcon>person</mat-icon>
-        <a routerLink="/user" (click)="close()">
+        <a routerLink="/user">
           User
         </a>
       </mat-list-item>
       <mat-divider></mat-divider>
-      <mat-list-item>
+      <mat-list-item (click)="close()">
         <mat-icon matListIcon>group</mat-icon>
-        <a routerLink="/membership" (click)="close()">
+        <a routerLink="/membership">
           Memberships
         </a>
       </mat-list-item>
       <mat-divider></mat-divider>
-      <mat-list-item>
+      <mat-list-item (click)="close()">
         <mat-icon matListIcon>group_add</mat-icon>
-        <a routerLink="/invitation" (click)="close()">
+        <a routerLink="/invitation">
           Invitations
         </a>
       </mat-list-item>
