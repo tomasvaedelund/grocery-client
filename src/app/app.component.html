@@ -46,7 +46,7 @@
 
 </mat-sidenav-container>
 
-<nav>
+<nav *ngIf="auth.authenticated">
   <mat-toolbar color="primary">
     <mat-toolbar-row fxLayout="row" fxLayoutAlign="center center">
 

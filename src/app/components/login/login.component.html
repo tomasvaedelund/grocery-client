@@ -1,10 +1,8 @@
-<p>
-  login works!
-</p>
+<div class="container">
+  <label for="email" class="label">Passwordless Auth</label><br>
+  <input type="email" class="input" [(ngModel)]="email">
 
-<label for="email" class="label">Passwordless Auth</label><br>
-<input type="email" class="input" [(ngModel)]="email">
-
-<button mat-button [disabled]="emailSent" (click)="sendEmailLink()">
-  Get Login Link
-</button>
+  <button mat-button [disabled]="emailSent" (click)="sendEmailLink()">
+    Get Login Link
+  </button>
+</div>
